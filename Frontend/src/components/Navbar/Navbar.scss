@@ -1,0 +1,122 @@
+.navbar_container {
+    width: 100%;
+    z-index: 100;
+    overflow: hidden;
+    position: fixed;
+    // background: #333333;
+
+    .navbar_container_main {
+        width: 100%;
+        display: flex;
+        padding-top: 15px;
+
+        .navbarlogo {
+            width: 100%;
+            padding-top: 5px;
+
+            ul {
+                li {
+                    list-style: none;
+
+                    i {
+                        transform: translateY(2px);
+
+                        padding-bottom: 0;
+                        font-size: 18px;
+                        cursor: pointer;
+                    }
+
+                    span {
+                        color: black;
+                        margin-left: 12px;
+                        align-items: center;
+                    }
+                }
+            }
+        }
+
+        .navbar_menu {
+            width: 100%;
+            padding-top: 5px;
+            display: flex;
+
+            ul {
+                li {
+                    list-style: none;
+
+                    span {
+                        color: black;
+                        font-size: 17px;
+                        padding: 7px 13px;
+                        border-radius: 3px;
+                        text-decoration: none;
+                        text-transform: uppercase;
+                        position: relative;
+                        font-weight: 400;
+
+                        &:hover {
+                            cursor: pointer;
+                            // color: #00a78e;
+                            color: #ffff;
+                        }
+
+                        &::after {
+                            content: "";
+                            height: 3px;
+                            width: 0px;
+                            background: #ffff;
+                            // background: #00a78e;
+                            position: absolute;
+                            left: 0%;
+                            bottom: 5px;
+                            transition: 0.2s;
+                        }
+
+                        &:hover::after {
+                            width: 100%;
+                        }
+                    }
+                }
+            }
+        }
+
+        .navbar_container_search {
+            width: 100%;
+            display: flex;
+            .navbar_container_search_item {
+                width: 100%;
+
+                input {
+                    width: 100%;
+                    border: 3px solid #00B4CC;
+                    border-right: none;
+                    padding: 5px;
+                    height: 35px;
+                    border-radius: 5px 0 0 5px;
+                    outline: none;
+                    color: #9DBFAF;
+                    &:focus{
+                        color: #00B4CC;
+                    }
+                }
+            }
+
+            .navbar_container_search {
+                width: 100%;
+
+                button {
+                    width: 100px;
+                    height: 36px;
+                    border: 1px solid #00B4CC;
+                    background: #00B4CC;
+                    text-align: center;
+                    color: #fff;
+                    border-radius: 0 5px 5px 0;
+                    cursor: pointer;
+                    font-size: 20px;
+                }
+            }
+        }
+
+    }
+}
