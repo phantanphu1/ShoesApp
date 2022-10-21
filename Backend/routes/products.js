@@ -17,5 +17,9 @@ const ProductsController = require('../controllers/products')
 app.use(allowCrossDomain)
 
 route.post('/products/create', ProductsController.createProduct)
+route.get('/products/getAllProducts', ProductsController.getAllProducts)
+route.get('/products/getProductById/:productId', ProductsController.getProductById)
+route.delete('/products/deleteProductById/:productId', ProductsController.deleteProductById)
+route.patch('/products/editProductById/:productId', ProductsController.editProduct)
 
 module.exports = route
