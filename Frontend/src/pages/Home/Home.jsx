@@ -1,9 +1,17 @@
-import React from 'react';
+import React, { useState, useEffect } from "react";
 import "./Home.scss";
 import Navbar from '../../components/Navbar/Navbar';
 import Footer from '../../components/Footer/Footer';
+import CardHome from "../../components/CardHome/CardHome";
+import product from "./dataShoes";
 
 const Home = () => {
+    const [data, setData] = useState([]);
+
+    useEffect(() => {
+        setData(product);
+    }, []);
+    
     return (
         <div>
             <Navbar />
@@ -45,10 +53,11 @@ const Home = () => {
                             </div>
                         </div>
                         <div className="container_home_product_card">
-
+                            {data.map((item) => (
+                                <CardHome product={item} />
+                            ))};
                         </div>
                     </div>
-
                 </div>
             </div>
             <Footer />

@@ -59,6 +59,8 @@
 
         .container_home_main_left {
             width: 20%;
+            height: 900px;
+            background-color:green;
         }
 
         .container_home_main_rigth {
@@ -100,7 +102,7 @@
                     select {
                         cursor: pointer;
                         font-size: 20px;
-                        width: 90%;
+                        width: 100%;
                         outline: none;
                         border: 1px solid #d4d4d4;
                         text-transform: capitalize;
@@ -109,10 +111,36 @@
 
                 }
             }
-            .container_home_product_card{
-                width: 90%;
+
+            .container_home_product_card {
+                width: 98%;
+                margin-top: 20px;
+                justify-content: space-between;
+                display: flex;
+                flex-wrap: wrap;
+                box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+                background-color: red;
+margin: auto;
+                .cardhome_container {
+
+                    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+                    padding-bottom: 20px;
+                    width: 100%;
+                    margin-top: 20px;
+                    margin: 5% auto;
+                    border-radius: 3px;
+                    flex-wrap: wrap;
+                    background-color: wheat;
+
+                    img {
+                        width: 300px;
+                        height: 200px;
+                        // margin-left: 30px;
+                        margin-top: 20px;
+                    }
+                }
             }
         }
     }
-    
+
 }
