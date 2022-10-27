@@ -1,33 +1,36 @@
 const Products = require("../models/products");
-
+const ProductValidation = require("../helpers/validation")
 //CRUD
 //CREATE-POST
-const createProduct = (req, res, next) => {
+const createProduct =  async (req, res, next) => {
   try {
-    const {
-      productName,
-      productBrand,
-      type,
-      price,
-      discount,
-      quantity,
-      images,
-    } = req.body;
-    if (
-      !productName ||
-      !productBrand ||
-      !type ||
-      !price ||
-      !discount ||
-      !quantity ||
-      !images
-    ) {
-      res.status(400).json({
-        statuscode: 400,
-        message: "Some fileds are not empty.",
-      });
-    }
-    let product = new Products(req.body);
+    
+    // const {
+    //   productName,
+    //   productBrand,
+    //   type,
+    //   price,
+    //   discount,
+    //   quantity,
+    //   images,
+    // } = req.body;
+    // if (
+    //   !productName ||
+    //   !productBrand ||
+    //   !type ||
+    //   !price ||
+    //   !discount ||
+    //   !quantity ||
+    //   !images
+    // ) {
+    //   res.status(400).json({
+    //     statuscode: 400,
+    //     message: "Some fileds are not empty.",
+    //   });
+    // }
+    const validBodyReq = await ProductValidation.addProductSchema.validateAsync(req.body)
+    // let product = new Products(req.body);
+    let product = new Products(validBodyReq);
     // product.save()
     product.save().then((response) => {
       res.json({
@@ -35,12 +38,18 @@ const createProduct = (req, res, next) => {
       });
     });
   } catch (error) {
-    res.status(400).json(
-      {
-        statuscode: 400,
-        message: 'Bad request'
-      }
-    )
+    console.log(' ERR',error);
+    // res.status(400).json(
+    //   {
+    //     statuscode: 400,
+    //     message: 'Bad request'
+    //   }
+    // )
+     return res.status(400).json({
+      statuscode:400,
+        message: 'Bad request',
+      errorsMessage:error.details[0].message,
+    })
   }
 };
 
@@ -127,10 +136,11 @@ const deleteProductById = async (req, res, next) => {
 //updata by id
 const editProduct = (req, res, next) => {
   try {
-    let productId = req.params.productId
-    if (!req.body) {
+    const productId = req.params.productId
+    const isBodyEmpTy = Object.keys(req.body).length
+    if (isBodyEmpTy === 0) {
       return res.send({
-        statuscode: 404,
+        statuscode: 403,
         message: 'Body request can not emty.',
       })
     }
@@ -148,7 +158,7 @@ const editProduct = (req, res, next) => {
       }
     })
   } catch (error) {
-    res.status(400).json({
+     res.status(400).json({
       statuscode: 400,
       message: 'Bad request',
     })
