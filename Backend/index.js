@@ -2,6 +2,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const ProductsRouter = require('./routes/products')
+const UsersRouter = require("./routes/users")
 
 const connection_string =
     'mongodb+srv://ShopApp:ShopApp@cluster0.xpyvfsh.mongodb.net/ShopApp'
@@ -32,3 +33,4 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
 app.use('/api', ProductsRouter)
+app.use('/api', UsersRouter)
