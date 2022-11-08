@@ -1,6 +1,8 @@
 const Users = require("../models/users");
-const {errorFunction} = require("../utils/errorFunction");
-const {securePassword} = require("../utils/securePassword");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const { errorFunction } = require("../utils/errorFunction");
+const { securePassword } = require("../utils/securePassword");
 
 const createUser = async (req, res, next) => {
   try {
@@ -18,7 +20,7 @@ const createUser = async (req, res, next) => {
       const hashedPassword = await securePassword(req.body.password);
 
       const newUser = await Users.create({
-        username: req.body.username,
+        userName: req.body.userName,
         password: hashedPassword,
         firsName: req.body.firsName,
         lastName: req.body.lastName,
@@ -42,6 +44,56 @@ const createUser = async (req, res, next) => {
   }
 };
 
+const login = (req, res, next) => {
+  try {
+    var username = req.body.userName;
+    var password = req.body.password;
+    // username = 'admin'x`
+    Users.findOne({ userName: username }).then(
+      // Users.findOne({ $or: [{ email: username }, { phone: username }] }).then(
+      (user) => {
+        if (user) {
+          bcrypt.compare(password, user.password, function (err, result) {
+            if (err) {
+              res.json(errorFunction(true, 400, "Bad Request"));
+            }
+            if (result) {
+              let access_token = jwt.sign(
+                {
+                  username: user.userName,
+                  firstName: user.firsName,
+                  lastName: user.lastName,
+                },
+                "secretValue",
+                {
+                  // thời gian của login
+                  expiresIn: "1h",
+                }
+              );
+              res.json({
+                message: "Login Successfully!",
+                access_token,
+                userId: user._id,
+                username: user.userName,
+                firsName: user.firsName,
+                lastName: user.lastName,
+                phone: user.phone,
+                addRess: user.addRess,
+                avatar: user.avatar,
+              });
+            } else {
+              res.json(errorFunction(true, 400, "Password does not matched!"));
+            }
+          });
+        } else {
+          res.json(errorFunction(true, 400, "No user found!"));
+        }
+      }
+    );
+  } catch (error) {
+    res.json(errorFunction(true, 400, "Bad Request"));
+  }
+};
 const getAllUser = async (req, res, next) => {
   try {
     const allUsers = await Users.find();
@@ -149,4 +201,5 @@ module.exports = {
   getUserById,
   deleteUserById,
   updateUser,
+  login,
 };

@@ -1,13 +1,16 @@
 const express = require('express')
 const mongoose = require('mongoose')
+require('dotenv').config()
 const bodyParser = require('body-parser')
 const ProductsRouter = require('./routes/products')
 const UsersRouter = require("./routes/users")
 
-const connection_string =
-    'mongodb+srv://ShopApp:ShopApp@cluster0.xpyvfsh.mongodb.net/ShopApp'
+const connection = process.env.MONGOOSE_URL
 
-mongoose.connect(connection_string, {
+// const connection_string =
+//     'mongodb+srv://ShopApp:ShopApp@cluster0.xpyvfsh.mongodb.net/ShopApp'
+
+mongoose.connect(connection, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
@@ -18,7 +21,9 @@ const app = express()
 
 app.use(express.json())
 
-const PORT = 5000
+// const PORT = 5000
+const PORT =process.env.PORT
+
 app.listen(PORT || 3000, () => {
     console.log(`server is running on PORT ${PORT}`)
 })

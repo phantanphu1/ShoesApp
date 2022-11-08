@@ -16,6 +16,7 @@ const {allowCrossDomain}= require("../utils/corsMiddleware")
 const UsersController = require("../controllers/users");
 app.use(allowCrossDomain);
 route.post("/users/create",userValidation, UsersController.createUser);
+route.post("/user/login",UsersController.login);
 route.get("/users/getAllUsers", UsersController.getAllUser);
 route.get("/users/getUserById/:userId", UsersController.getUserById);
 route.delete("/users/deleteUserById/:userId", UsersController.deleteUserById);

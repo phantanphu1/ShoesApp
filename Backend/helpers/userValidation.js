@@ -25,7 +25,7 @@ const validation = joi.object({
 
 const userValidation = async (req, res, next) => {
   const paylaod = {
-    username: req.body.username,
+    username: req.body.userName,
     password: req.body.password,
     firsName: req.body.firsName,
     lastName: req.body.lastName,
