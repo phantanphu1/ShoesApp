@@ -1,7 +1,7 @@
 const Orders = require("../models/orders");
 const Products = require("../models/products");
 const Users = require("../models/users");
-const {errorFunction} = require("../utils/errorFunction");
+const { errorFunction } = require("../utils/errorFunction");
 const createOrder = async (req, res, next) => {
   try {
     const productId = await Products.findById(req.body.productId);
@@ -18,7 +18,7 @@ const createOrder = async (req, res, next) => {
     }
     const newOrder = await Orders.create(req.body);
 
-    if (newOrder) { 
+    if (newOrder) {
       return res
         .status(201)
         .json(errorFunction(false, 201, "Order Created", newOrder));
@@ -30,6 +30,72 @@ const createOrder = async (req, res, next) => {
     return res.status(403).json(errorFunction(true, "Error Creating Order"));
   }
 };
+//add
+const addOrderProduct = async (req, res, next) => {
+  //get userId frm body request
+  //get user by UserId and check in DB
+  // if-else
+  //get ProductId from body request
+  // get product by productId from body request
+  //if - else
+  //if product => check quantity of this product(10)
+  // if quantity of body request(2)<= quantity of thí product in stock=> ok
+  // update quantity of product in stock(8)
+  // else=> show mesage
+  const quantity = req.body.quantity;
+  try {
+    const user = await Users.findById(req.body.userId);
+    const product = await Products.findById(req.body.productId);
+    const requestProduct = { quantity: (product.quantity - quantity) };
+    if (!user) {
+      return res.json(
+        errorFunction(true, 204, "This user Id have not in the database")
+      );
+    }
+    if (!product) {
+      return res.json(
+        errorFunction(true, 204, "This product Id have not in the database")
+      );
+    } else {
+      //check quantity
+      if (quantity <= product.quantity) {
+        //mua
+        const newOrder = await Orders.create(req.body);
+
+        if (newOrder) {
+          Products.findByIdAndUpdate(req.body.productId, requestProduct).then(
+            (data) => {
+              if (data) {
+                res.status(201);
+                return res.json(
+                  errorFunction(false, 201, "Order Created", newOrder)
+                );
+              } else {
+                return res.json(errorFunction(true, 403, "Bad request"));
+              }
+            }
+          );
+        } else {
+          res.status(403);
+          return res.json(errorFunction(true, 403, "Error Creating Orrder"));
+        }
+      } else {
+        //show mess
+        return res.json(
+          errorFunction(
+            true,
+            206,
+            "The quantity is greater than quantity in the stock"
+          )
+        );
+      }
+    }
+  } catch (error) {
+    console.log("ERRORS:", error);
+    return res.status(403).json(errorFunction(true, "Bad request"));
+  }
+};
+
 const getAllOrder = async (req, res, next) => {
   try {
     const {
@@ -63,12 +129,9 @@ const getAllOrder = async (req, res, next) => {
             $options: "$i",
           },
         },
-        // {
-        //   orderStatus:{
-        //     $regex: orderStatus,
-        //     $options: "$i",
-        //   }
-        // }
+        {
+          orderStatus: orderStatus,
+        },
       ],
     };
     const filterOrder = await Orders.find(filter)
@@ -89,7 +152,9 @@ const getAllOrder = async (req, res, next) => {
         totalPage: totalPage,
         totalOrders: allOrders.length,
         orders:
-          orderByDirection && orderByColumn ? filterOrder : filterOrder.reverse(),
+          orderByDirection && orderByColumn
+            ? filterOrder
+            : filterOrder.reverse(),
         // reverse: thêm vào đầu
       });
     } else {
@@ -129,6 +194,40 @@ const getOrderById = async (req, res, next) => {
     });
   }
 };
+
+// get by user id
+const getOrderByUserId = async (req, res, next) => {
+  const userId = req.params.userId
+  try {
+    const filter = {
+      $and: [
+        {
+          userId: {
+            $regex: userId,
+            $options: '$i',
+          },
+        },
+      ],
+    }
+    const orders = await Orders.find(filter)
+    if (orders) {
+      res.status(200).json({
+        statusCode: 200,
+        total: orders.length,
+        orders: orders.reverse(),
+      })
+    } else {
+      res.json({
+        statusCode: 204,
+        message: 'This order Id have not in the database',
+        order: {},
+      })
+    }
+  } catch (error) {
+    res.status(400)
+    return res.json(errorFunction(true, 400, 'Bad request'))
+  }
+}
 
 const deleteOrderById = async (req, res, next) => {
   const orderId = req.params.orderId;
@@ -190,4 +289,6 @@ module.exports = {
   getOrderById,
   deleteOrderById,
   updateOrder,
+  addOrderProduct,
+  getOrderByUserId
 };

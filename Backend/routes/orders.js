@@ -13,8 +13,13 @@ var allowCrossDomain = function (req, res, next) {
 const OrderController=require("../controllers/orders");
 const { orderValidation } = require("../helpers/orderValidation");
 route.post("/orders/create",orderValidation,OrderController.createOrder);
+route.post("/orders/addOrder",orderValidation,OrderController.addOrderProduct);
+
 route.get("/order/getAllOrder", OrderController.getAllOrder);
+route.get("/order/getOrderByUserId/:userId", OrderController.getOrderByUserId);
+
 route.get("/order/getAllOrderById/:orderId", OrderController.getOrderById);
+
 route.delete("/order/deleteOrderById/:orderId", OrderController.deleteOrderById);
 route.patch("/order/updateOrderById/:orderId", OrderController.updateOrder);
 

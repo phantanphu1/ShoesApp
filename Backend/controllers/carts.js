@@ -1,9 +1,23 @@
 const Carts = require("../models/carts");
+const Products = require("../models/products");
+const Users = require("../models/users");
 const {errorFunction} = require("../utils/errorFunction");
 // CRUD
 // CREATE - POST
 const createCart = async (req, res, next) => {
   try {
+    const productId = await Products.findById(req.body.productId);
+    const userId = await Users.findById(req.body.userId);
+    if (!productId) {
+      return res.json(
+        errorFunction(true, 204, "This product Id have not in the database")
+      );
+    }
+    if (!userId) {
+      return res.json(
+        errorFunction(true, 204, "This user Id have not in the database")
+      );
+    }
     const newCart = await Carts.create(req.body);
     if (newCart) {
       return res
@@ -106,6 +120,40 @@ const getCartById = async (req, res, next) => {
   }
 };
 
+
+// get by user id
+const getCartByUserId = async (req, res, next) => {
+  const userId = req.params.userId
+  try {
+    const filter = {
+      $and: [
+        {
+          userId: {
+            $regex: userId,
+            $options: '$i',
+          },
+        },
+      ],
+    }
+    const carts = await Carts.find(filter)
+    if (carts) {
+      res.status(200).json({
+        statusCode: 200,
+        total: carts.length,
+        carts: carts.reverse(),
+      })
+    } else {
+      res.json({
+        statusCode: 204,
+        message: 'This cart Id have not in the database',
+        carts: {},
+      })
+    }
+  } catch (error) {
+    res.status(400)
+    return res.json(errorFunction(true, 400, 'Bad request'))
+  }
+}
 //delete product by id
 const deleteCartById = async (req, res, next) => {
   const cartId = req.params.cartId;
@@ -173,4 +221,5 @@ module.exports = {
   deleteCartById,
   updateCart,
   getCartById,
+  getCartByUserId
 };

@@ -15,6 +15,8 @@ const {cartValidation} = require("../helpers/cartValidation");
 route.post("/carts/create", cartValidation, CartController.createCart);
 route.get("/cart/getAllCart", CartController.getAllCarts);
 route.get("/cart/getAllCartById/:cartId", CartController.getCartById);
+route.get("/cart/getCartByUserId/:userId", CartController.getCartByUserId);
+
 route.delete("/cart/deleteCartById/:cartId", CartController.deleteCartById);
 route.patch("/cart/updateCartById/:cartId", CartController.updateCart);
 
