@@ -4,7 +4,7 @@ require('dotenv').config()
 const bodyParser = require('body-parser')
 const ProductsRouter = require('./routes/products')
 const UsersRouter = require("./routes/users")
-
+const OderRouter = require("./routes/order")
 const connection = process.env.MONGOOSE_URL
 
 // const connection_string =
@@ -39,3 +39,4 @@ app.use(bodyParser.json())
 
 app.use('/api', ProductsRouter)
 app.use('/api', UsersRouter)
+app.use('/api',OderRouter)

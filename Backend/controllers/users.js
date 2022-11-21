@@ -11,7 +11,7 @@ const createUser = async (req, res, next) => {
     }).lean(true);
 
     const existingUsername = await Users.findOne({
-      userName: req.body.userName,
+      username: req.body.username,
     }).lean(true);
     if (existingEmail || existingUsername) {
       res.status(403);
@@ -20,12 +20,12 @@ const createUser = async (req, res, next) => {
       const hashedPassword = await securePassword(req.body.password);
 
       const newUser = await Users.create({
-        userName: req.body.userName,
+        username: req.body.username,
         password: hashedPassword,
         firsName: req.body.firsName,
         lastName: req.body.lastName,
         phone: req.body.phone,
-        addRess: req.body.addRess,
+        addRess: req.body.address,
         avatar: req.body.avatar,
         isAdmin: req.body.isAdmin,
       });
@@ -46,10 +46,10 @@ const createUser = async (req, res, next) => {
 
 const login = (req, res, next) => {
   try {
-    var username = req.body.userName;
+    var username = req.body.username;
     var password = req.body.password;
     // username = 'admin'x`
-    Users.findOne({ userName: username }).then(
+    Users.findOne({ username: username }).then(
       // Users.findOne({ $or: [{ email: username }, { phone: username }] }).then(
       (user) => {
         if (user) {
@@ -60,8 +60,8 @@ const login = (req, res, next) => {
             if (result) {
               let access_token = jwt.sign(
                 {
-                  username: user.userName,
-                  firstName: user.firsName,
+                  username: user.username,
+                  firstName: user.firstName,
                   lastName: user.lastName,
                 },
                 "secretValue",
@@ -74,11 +74,11 @@ const login = (req, res, next) => {
                 message: "Login Successfully!",
                 access_token,
                 userId: user._id,
-                username: user.userName,
-                firsName: user.firsName,
+                username: user.username,
+                firsName: user.firstName,
                 lastName: user.lastName,
                 phone: user.phone,
-                addRess: user.addRess,
+                addRess: user.address,
                 avatar: user.avatar,
               });
             } else {

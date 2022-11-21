@@ -4,7 +4,7 @@ const patternPassword = /^[a-zA-Z0-9]{3,30}$/;
 const patternPhone = /^[0]{1}[0-9]{9}/;
 
 const validation = joi.object({
-  userName: joi.string().min(5).max(30).required(),
+  username: joi.string().min(5).max(30).required(),
   password: joi
     .string()
     .min(5)
@@ -18,7 +18,7 @@ const validation = joi.object({
     .string()
     .email({ tlds: { allow: false } })
     .allow(""),
-  addRess: joi.string().min(10).max(100).allow(""),
+  address: joi.string().min(10).max(100).allow(""),
   avatar: joi.string().allow(""),
   isAdmin: joi.boolean().required(),
 });
@@ -30,7 +30,7 @@ const userValidation = async (req, res, next) => {
     firsName: req.body.firsName,
     lastName: req.body.lastName,
     phone: req.body.phone,
-    addRess: req.body.addRess,
+    address: req.body.addRess,
     avatar: req.body.avatar,
     isAdmin: req.body.isAdmin,
   };

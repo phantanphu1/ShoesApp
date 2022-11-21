@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const usersSchema = new Schema(
   {
-    userName: {
+    username: {
       type: String,
       require: true,
     },
@@ -11,7 +11,7 @@ const usersSchema = new Schema(
       type: String,
       require: true,
     },
-    firsName: {
+    firstName: {
       type: String,
       require: true,
     },
@@ -27,7 +27,7 @@ const usersSchema = new Schema(
       type: String,
       require: false,
     },
-    addRess: {
+    address: {
       type: String,
       require: false,
     },
@@ -35,9 +35,9 @@ const usersSchema = new Schema(
       type: String,
       require: false,
     },
-    isAdmin:{
-      type:Boolean,
-      require:true,
+    isAdmin: {
+      type: Boolean,
+      require: true,
     },
   },
   { timestamps: true }
