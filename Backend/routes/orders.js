@@ -10,13 +10,13 @@ var allowCrossDomain = function (req, res, next) {
   next();
 };
 
-const OrderController=require("../controllers/order");
+const OrderController=require("../controllers/orders");
 const { orderValidation } = require("../helpers/orderValidation");
 route.post("/orders/create",orderValidation,OrderController.createOrder);
 route.get("/order/getAllOrder", OrderController.getAllOrder);
 route.get("/order/getAllOrderById/:orderId", OrderController.getOrderById);
 route.delete("/order/deleteOrderById/:orderId", OrderController.deleteOrderById);
-route.patch("/order/updateOrder/:orderId", OrderController.updateOrder);
+route.patch("/order/updateOrderById/:orderId", OrderController.updateOrder);
 
 // app.use(cors({ origin: '*', credentials: true }))
 app.use(allowCrossDomain);
