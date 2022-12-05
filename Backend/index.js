@@ -6,6 +6,8 @@ const ProductsRouter = require("./routes/products");
 const UsersRouter = require("./routes/users");
 const OrderRouter = require("./routes/orders");
 const CartRouter = require("./routes/carts");
+const CommentRouter = require("./routes/comments");
+const HistoryRouter = require("./routes/historys");
 
 const connection = process.env.MONGOOSE_URL;
 
@@ -43,3 +45,5 @@ app.use("/api", ProductsRouter);
 app.use("/api", UsersRouter);
 app.use("/api", OrderRouter);
 app.use("/api", CartRouter);
+app.use("/api", CommentRouter);
+app.use("/api", HistoryRouter);
