@@ -14,6 +14,7 @@ const OrderController=require("../controllers/orders");
 const { orderValidation } = require("../helpers/orderValidation");
 route.post("/orders/create",orderValidation,OrderController.createOrder);
 route.post("/orders/addOrder",orderValidation,OrderController.addOrderProduct);
+route.post("/orders/addMultipleOrders",OrderController.addMultipleOrders);
 
 route.get("/order/getAllOrder", OrderController.getAllOrder);
 route.get("/order/getOrderByUserId/:userId", OrderController.getOrderByUserId);

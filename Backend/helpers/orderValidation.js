@@ -20,6 +20,7 @@ const validation = joi.object({
   address: joi.string().min(10).max(100).allow(""),
   quantity: joi.number().required(),
   images: joi.string().allow(""),
+  cartId:joi.optional(),
 });
 
 const orderValidation = async (req, res, next) => {
