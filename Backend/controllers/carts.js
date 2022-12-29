@@ -1,7 +1,7 @@
 const Carts = require("../models/carts");
 const Products = require("../models/products");
 const Users = require("../models/users");
-const {errorFunction} = require("../utils/errorFunction");
+const { errorFunction } = require("../utils/errorFunction");
 // CRUD
 // CREATE - POST
 const createCart = async (req, res, next) => {
@@ -77,9 +77,7 @@ const getAllCarts = async (req, res, next) => {
         totalPage: totalPage,
         totalCarts: allCarts.length,
         carts:
-         cartByDirection && cartByColumn
-            ? filterCarts
-            : filterCarts.reverse(),
+          cartByDirection && cartByColumn ? filterCarts : filterCarts.reverse(),
       });
     } else {
       res.status(200).json({
@@ -120,40 +118,39 @@ const getCartById = async (req, res, next) => {
   }
 };
 
-
 // get by user id
 const getCartByUserId = async (req, res, next) => {
-  const userId = req.params.userId
+  const userId = req.params.userId;
   try {
     const filter = {
       $and: [
         {
           userId: {
             $regex: userId,
-            $options: '$i',
+            $options: "$i",
           },
         },
       ],
-    }
-    const carts = await Carts.find(filter)
+    };
+    const carts = await Carts.find(filter);
     if (carts) {
       res.status(200).json({
         statusCode: 200,
         total: carts.length,
         carts: carts.reverse(),
-      })
+      });
     } else {
       res.json({
         statusCode: 204,
-        message: 'This cart Id have not in the database',
+        message: "This cart Id have not in the database",
         carts: {},
-      })
+      });
     }
   } catch (error) {
-    res.status(400)
-    return res.json(errorFunction(true, 400, 'Bad request'))
+    res.status(400);
+    return res.json(errorFunction(true, 400, "Bad request"));
   }
-}
+};
 //delete product by id
 const deleteCartById = async (req, res, next) => {
   const cartId = req.params.cartId;
@@ -210,7 +207,21 @@ const updateCart = (req, res, next) => {
   }
 };
 
-
+//delete Multiple Cart
+const deleteMultipleCart = async (req, res, next) => {
+  const listProductsId = req.body;
+  try {
+    Promise.all(
+      listProductsId.map((productId) => Carts.findByIdAndRemove(productId))
+    ).then((response) => {
+      res.status(200);
+      return res.json(errorFunction(false, 200, "Delete Product In Cart Successfully"));
+    });
+  } catch (error) {
+    res.status(400);
+    return res.json(errorFunction(true, 400, "Bad request"));
+  }
+};
 // READ - GET || POST
 // UPDATE - PUT || PATCH
 // DELETE - DELETE
@@ -221,5 +232,6 @@ module.exports = {
   deleteCartById,
   updateCart,
   getCartById,
-  getCartByUserId
+  getCartByUserId,
+  deleteMultipleCart,
 };

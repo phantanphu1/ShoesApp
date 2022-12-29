@@ -18,6 +18,8 @@ route.get("/cart/getAllCartById/:cartId", CartController.getCartById);
 route.get("/cart/getCartByUserId/:userId", CartController.getCartByUserId);
 
 route.delete("/cart/deleteCartById/:cartId", CartController.deleteCartById);
+route.delete("/cart/deleteMultipleCart", CartController.deleteMultipleCart);
+
 route.patch("/cart/updateCartById/:cartId", CartController.updateCart);
 
 // app.use(cors({ origin: '*', credentials: true }))

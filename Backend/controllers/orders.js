@@ -398,7 +398,10 @@ const addMultipleOrders = async (req, res, next) => {
   }
 };
 
+
+
 const deleteMultipleOrders = async (req, res, next) => {
+  const listOrderId = req.body
   try {
   } catch (error) {
     res.status(400).json({
@@ -407,6 +410,11 @@ const deleteMultipleOrders = async (req, res, next) => {
     });
   }
 };
+
+//delete Multiple Orders
+
+
+
 
 module.exports = {
   createOrder,
